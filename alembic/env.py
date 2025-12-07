@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pingslot.config import settings
 from pingslot import models
+
 _ = models
 from sqlmodel import SQLModel
 
@@ -73,7 +74,7 @@ def run_migrations_online() -> None:
     configuration = config.get_section(config.config_ini_section, {})
     if "sqlalchemy.url" not in configuration:
         configuration["sqlalchemy.url"] = settings.database.url
-    
+
     connectable = engine_from_config(
         configuration,
         prefix="sqlalchemy.",
@@ -81,9 +82,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
